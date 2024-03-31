@@ -2,10 +2,8 @@ import { req } from './test-helpers'
 import { SETTINGS } from '../src/settings'
 import { db, setDB } from '../src/db/db'
 import { dataset1, dataset2, video1 } from './dataset'
-import { ResolutionsEnum, TypeRequestEnum } from '../src/videos/enums/videos-enum'
+import { ResolutionsEnum } from '../src/videos/enums/videos-enum'
 import { InputForCreateVideoType } from '../src/videos/types/videos-types'
-import { videoValidator } from '../src/validators/validators'
-import { title } from 'process'
 
 describe('/videos', () => {
   beforeAll(async () => {
