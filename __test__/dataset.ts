@@ -26,7 +26,7 @@ export const createPosts= (count: number): PostDBType[] => {
       content:	`content${ind+1}`,
       blogId:	new ObjectId(),
       blogName:	`blogName${ind+1}`,
-      createdAt: new Date()
+      createdAt: new Date().toISOString()
     })
   }
   return arrCreatedPosts
@@ -40,7 +40,7 @@ export const createBlogs= (count: number): BlogDBType[] => {
       description:	`description${ind+1}`,
       websiteUrl:	`websiteUrl${ind+1}`,
       isMembership:	false,
-      createdAt: new Date()
+      createdAt: new Date().toISOString()
     })
   }
   return arrCreatedBlogs

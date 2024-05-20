@@ -85,6 +85,7 @@ describe(SETTINGS.PATH.POSTS, () => {
       
     // expect(db.posts.length).toBe(2)
     expect(res.body.title).toEqual('new post')
+    expect(res.body.createdAt).toMatch(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/)
     expect(res.body.content).toEqual(newPost.content)
   })
   //

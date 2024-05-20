@@ -7,5 +7,5 @@ export type PostDBType = {
   content:	string // maxLength: 1000
   blogId:	ObjectId
   blogName:	string
-  createdAt: Date
+  createdAt: string
 }

@@ -5,7 +5,7 @@ export type PostType = {
   content:	string // maxLength: 1000
   blogId:	string
   blogName:	string
-  createdAt: Date
+  createdAt: string
 }
 export type InputPostType = {
   title:	string // maxLength: 30

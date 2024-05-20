@@ -3,7 +3,7 @@ export type BlogType = {
   name: string
   description: string
   websiteUrl: string
-  createdAt: Date
+  createdAt: string
   isMembership: boolean
 }
 
