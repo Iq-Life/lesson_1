@@ -48,31 +48,17 @@ export const postRepository = {
 
   },
 
-  async deletePost(id: string): Promise<{error?: string, isDeleted: boolean}> {
-    try {
-      await postCollection.deleteOne({_id: new ObjectId(id)})
-  
-      return { isDeleted: true }
-    } catch (error) {
-      console.log(error)
-
-      return {error: 'problem to delete', isDeleted: false}
-    }
+  async deletePost(id: string): Promise<boolean> {
+    const deletedInfo = await postCollection.deleteOne({_id: new ObjectId(id)})
+    return !!deletedInfo.deletedCount
   },
 
-  async updatePost(id: string, inputPost: InputPostType): Promise<{error?: string, isUpdate: boolean}> {
-    try {
-      const changedPost = { ...inputPost, createdAt: new Date().toISOString() } as any
-      const insertedInfo = await postCollection.updateOne({
-        _id: new ObjectId(id)},
-        { $set: changedPost }
-      )
-
-      return { isUpdate: !!insertedInfo.modifiedCount }
-    } catch {
-      console.log(new Error('problem to update'));
-
-      return {error: 'problem to update', isUpdate: false}
-    }
+  async updatePost(id: string, inputPost: InputPostType): Promise<boolean> {
+    const changedPost = { ...inputPost, createdAt: new Date().toISOString() } as any
+    const insertedInfo = await postCollection.updateOne({
+      _id: new ObjectId(id)},
+      { $set: changedPost }
+    )
+    return !!insertedInfo.modifiedCount
   }
 }

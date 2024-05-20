@@ -11,7 +11,7 @@ type ReqQueryType = string
 export const deletePostController = async (req: Request<ParamsType, any, ReqQueryType>, res: Response<OutputVideoType>) => {
   const isDeleted = await postRepository.deletePost(req.params.id);
 
-  if (isDeleted.isDeleted) {
+  if (isDeleted) {
     res
       .sendStatus(204)
   } else {
