@@ -50,7 +50,6 @@ export const blogsRepository = {
   async updateBlog(id: string, inputBlog: InputBlogType): Promise<boolean> {
     const infoUdated = await blogCollection.updateOne({_id: new ObjectId(id)}, {
       $set: {
-        createdAt: new Date().toISOString(),
         ...inputBlog
       }
     })

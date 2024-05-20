@@ -60,7 +60,10 @@ export const postRepository = {
   },
 
   async updatePost(id: string, inputPost: InputPostType): Promise<boolean> {
-    const changedPost = { ...inputPost, createdAt: new Date().toISOString() } as any
+    const changedPost = { 
+      ...inputPost,
+      blogId: new ObjectId(inputPost.blogId)
+    } 
     const insertedInfo = await postCollection.updateOne({
       _id: new ObjectId(id)},
       { $set: changedPost }
