@@ -2,10 +2,9 @@ import { req } from './test-helpers'
 import { SETTINGS } from '../src/settings'
 import { blogCollection, loginPassword, postCollection, runDB } from '../src/db/db'
 import { createBlogs, createPosts } from './dataset'
-import { InputPostType, PostType } from '../src/types/postsTypes'
+import { InputPostType } from '../src/types/postsTypes'
 import { converStringIntoBase64 } from '../src/helpers/helpers'
 import { postRepository } from '../src/posts/repositories/postRepository'
-import { ObjectId } from 'mongodb'
 
 const invalidPost: any = {
   title: 'length 31 symbols sssssssssssss',
@@ -15,14 +14,17 @@ const invalidPost: any = {
 }
 
 describe(SETTINGS.PATH.POSTS, () => {
+  const blogsDb = createBlogs(1)
+
   beforeAll(async () => {
     // await req.delete('/testing/all-data')
-    
-    // await postCollection.drop()
     await runDB()
+    await blogCollection.drop()
+    await blogCollection.insertMany(blogsDb)
   })
   afterAll(async () => {
-    await runDB()
+    await postCollection.drop()
+    await blogCollection.drop()
   })
 
   // --- GET --- //
@@ -63,13 +65,13 @@ describe(SETTINGS.PATH.POSTS, () => {
       .get(`${SETTINGS.PATH.POSTS}/${setId}`)
       .expect(404)
   })
-
+  //
   // ---- POST --- //
   it('should create post', async () => {
     await postCollection.drop()
     const newPost: InputPostType = {
       title: 'new post',
-      blogId: '23',
+      blogId: blogsDb[0]._id.toString(),
       content: 'bla bla bla bla bla',
       shortDescription: '...short Description...'
     }
@@ -80,7 +82,7 @@ describe(SETTINGS.PATH.POSTS, () => {
       .set({ 'Authorization': 'Basic ' + codedAuth })
       .send(newPost)
       .expect(201)
-
+      
     // expect(db.posts.length).toBe(2)
     expect(res.body.title).toEqual('new post')
     expect(res.body.content).toEqual(newPost.content)
@@ -111,24 +113,12 @@ describe(SETTINGS.PATH.POSTS, () => {
   //
   it('ERORR invalid post because blogId not found', async () => {
     await postCollection.drop()
-    await blogCollection.drop()
-    const blogsDb = createBlogs(1)
-
-      const newPost: InputPostType = {
-        title: 'new post',
-        blogId: '23',
-        // blogId: blogsDb[0]._id.toString(),
-        content: 'bla bla bla bla bla',
-        shortDescription: '...short Description...'
-      }
-    await blogCollection.insertMany(blogsDb)
-    // setDB(dataset1)
-    // const newPost: CreateUpdatePostType = {
-    //   title: 'new post',
-    //   blogId: '093',
-    //   content: 'bla bla bla bla bla',
-    //   shortDescription: '...short Description...'
-    // }
+    const newPost: InputPostType = {
+      title: 'new post',
+      blogId: '555b3af555a5550c5555e555',
+      content: 'bla bla bla bla bla',
+      shortDescription: '...short Description...'
+    }
     const codedAuth = converStringIntoBase64(loginPassword)
 
     const res = await req
@@ -183,7 +173,7 @@ describe(SETTINGS.PATH.POSTS, () => {
     const createdPostsDB = createPosts(2)
     const changedPost = {
       title: 'changed post',
-      blogId: createdPostsDB[0].blogId.toString(),
+      blogId: blogsDb[0]._id.toString(),
       content: createdPostsDB[0].content,
       shortDescription: '...short Description...'
     }
