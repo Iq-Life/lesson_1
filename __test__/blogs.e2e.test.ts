@@ -16,7 +16,7 @@ describe(SETTINGS.PATH.BLOGS, () => {
     await runDB()
   })
   afterAll(async () => {
-    await runDB()
+    await blogCollection.drop()
   })
   
 
@@ -153,6 +153,7 @@ describe(SETTINGS.PATH.BLOGS, () => {
       websiteUrl: 'https://www.leningrad.com'
     }
     const setId = blogsDb[0]._id.toString()
+    const firstCreatedDate = blogsDb[0].createdAt
     await blogCollection.insertMany(blogsDb)
     const codedAuth = converStringIntoBase64(loginPassword)
 
@@ -164,7 +165,7 @@ describe(SETTINGS.PATH.BLOGS, () => {
 
     const blogs = await blogCollection.find({}).toArray()
     const findedPost = blogs.find((post) => post._id.toString() === setId)
-
+    expect(firstCreatedDate).not.toBe(findedPost?.createdAt)
     expect(blogsDb.length).toBe(2)
     expect(res.statusCode).toEqual(204)
     expect(findedPost?.name).toEqual('changed name')
