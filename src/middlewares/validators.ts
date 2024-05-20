@@ -1,11 +1,15 @@
 import { ValidationChain, body } from "express-validator";
-import { dbLocal } from "../db/db";
-import { blogsRepository } from "../Blogs/repositories/blogsRepository";
+import { Request, Response, NextFunction } from "express";
+import { ObjectId } from "mongodb";
 
 type LengthValidType = {
   title: string,
   min?: number,
   max?: number,
+}
+
+type ParamsType = {
+  id: string
 }
 
 export const lengthValid = ({title, min, max}: LengthValidType): ValidationChain => (
@@ -23,6 +27,15 @@ export const urlValid = (field: string): ValidationChain => (
     .withMessage(('Invalid url'))
 )
 
+export const idValid = (req: Request<ParamsType>, res: Response, next: NextFunction) => {
+  if(!ObjectId.isValid(req.params.id)) {
+    res
+      .sendStatus(404)
+    return
+  }
+  next()
+}
+
 
 export const forBlogId = (field: string): ValidationChain => {
   return body(field)
@@ -30,7 +43,7 @@ export const forBlogId = (field: string): ValidationChain => {
       if (typeof value !== 'string') {
         throw new Error(field + ' must be string');
       }
-      // const findBlogById = blogsRepository.findBlogById(value)?.id
+      // const findBlogById = blogsRepository.findBlogById(value)
       // if (!findBlogById) {
       //   throw new Error(field + ' not found');
       // }

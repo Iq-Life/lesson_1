@@ -5,7 +5,7 @@ import { postsRouter } from './routes/posts-routes'
 import { videosRouter } from './routes/videos-routes'
 import { blogsRouter } from './routes/blogs-routers'
 
- const app = express()
+const app = express()
 
 app.use(express.json())
 

@@ -21,6 +21,9 @@ describe(SETTINGS.PATH.POSTS, () => {
     // await postCollection.drop()
     await runDB()
   })
+  afterAll(async () => {
+    await runDB()
+  })
 
   // --- GET --- //
   it('get /videos', async () => {
@@ -47,6 +50,18 @@ describe(SETTINGS.PATH.POSTS, () => {
     .expect(200)
     
     expect(res.body.id).toEqual(setId)
+  })
+  //
+  //
+  it('ERROR get by id /post/id because not found', async () => {
+    await postCollection.drop()
+    const createdPostsDB = createPosts(2)
+    await postCollection.insertMany(createdPostsDB)
+    const setId = 23 // does not exist
+    
+    await req
+      .get(`${SETTINGS.PATH.POSTS}/${setId}`)
+      .expect(404)
   })
 
   // ---- POST --- //
@@ -94,36 +109,38 @@ describe(SETTINGS.PATH.POSTS, () => {
   })
 
   //
-  // it('ERORR invalid post because blogId not found', async () => {
-  //   await postCollection.drop()
-  //   await blogCollection.drop()
-  //   const blogsDb = createBlogs(1)
+  it('ERORR invalid post because blogId not found', async () => {
+    await postCollection.drop()
+    await blogCollection.drop()
+    const blogsDb = createBlogs(1)
 
-  //   const newPost: InputPostType = {
-  //     title: 'new post',
-  //     blogId: '555a5555f55fb5c5c5cb5a5b',
-  //     content: 'bla bla bla bla bla',
-  //     shortDescription: '...short Description...'
-  //   }
-  //   // setDB(dataset1)
-  //   // const newPost: CreateUpdatePostType = {
-  //   //   title: 'new post',
-  //   //   blogId: '093',
-  //   //   content: 'bla bla bla bla bla',
-  //   //   shortDescription: '...short Description...'
-  //   // }
-  //   const codedAuth = converStringIntoBase64(loginPassword)
+      const newPost: InputPostType = {
+        title: 'new post',
+        blogId: '23',
+        // blogId: blogsDb[0]._id.toString(),
+        content: 'bla bla bla bla bla',
+        shortDescription: '...short Description...'
+      }
+    await blogCollection.insertMany(blogsDb)
+    // setDB(dataset1)
+    // const newPost: CreateUpdatePostType = {
+    //   title: 'new post',
+    //   blogId: '093',
+    //   content: 'bla bla bla bla bla',
+    //   shortDescription: '...short Description...'
+    // }
+    const codedAuth = converStringIntoBase64(loginPassword)
 
-  //   const res = await req
-  //     .post(SETTINGS.PATH.POSTS)
-  //     .set({ 'Authorization': 'Basic ' + codedAuth })
-  //     .send(newPost)
-  //     .expect(400)
+    const res = await req
+      .post(SETTINGS.PATH.POSTS)
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .send(newPost)
+      .expect(400)
 
-  //   expect(res.body.errorsMessages.length).toBe(1)
-  //   expect(res.body.errorsMessages[0].message).toEqual('blogId not found')
-  //   expect(res.body.errorsMessages[0].field).toEqual('blogId')
-  // })
+    expect(res.body.errorsMessages.length).toBe(1)
+    expect(res.body.errorsMessages[0].message).toEqual('blogId not found')
+    expect(res.body.errorsMessages[0].field).toEqual('blogId')
+  })
 
 
   // --- DELETE --- //

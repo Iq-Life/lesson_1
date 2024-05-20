@@ -16,6 +16,10 @@ describe(SETTINGS.PATH.BLOGS, () => {
   beforeAll(async () => {
     await runDB()
   })
+  afterAll(async () => {
+    await runDB()
+  })
+  
 
   // --- GET --- //
   it('get /blogs', async () => {
