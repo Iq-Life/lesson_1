@@ -34,7 +34,6 @@ export const postRepository = {
   },
 
   async createPost(postData: InputPostType): Promise<{error?: string, id?: string}> {
-    // ? что лучше возввращать в таких случаях
     const newPost = { ...postData } as any
 
     try {
@@ -55,7 +54,6 @@ export const postRepository = {
   
       return { isDeleted: true }
     } catch (error) {
-      // ? какие ошибки лучше выводить
       console.log(error)
 
       return {error: 'problem to delete', isDeleted: false}
@@ -64,8 +62,7 @@ export const postRepository = {
 
   async updatePost(id: string, inputPost: InputPostType): Promise<{error?: string, isUpdate: boolean}> {
     try {
-      // ? what fuck зачем приходится проводить такие манипуляцйии
-      const changedPost = { ...inputPost } as any
+      const changedPost = { ...inputPost, createdAt: new Date().toISOString() } as any
       const insertedInfo = await postCollection.updateOne({
         _id: new ObjectId(id)},
         { $set: changedPost }

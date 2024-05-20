@@ -3,7 +3,6 @@ import { SETTINGS } from '../src/settings'
 import { blogCollection, loginPassword, runDB } from '../src/db/db'
 import { InputBlogType } from '../src/types/blogsType'
 import { converStringIntoBase64 } from '../src/helpers/helpers'
-import { blogsRepository } from '../src/Blogs/repositories/blogsRepository'
 import { createBlogs } from './dataset'
 
 const invalidBlog: InputBlogType = {
@@ -39,7 +38,6 @@ describe(SETTINGS.PATH.BLOGS, () => {
     const blogsDb = createBlogs(2)
     const setId = blogsDb[0]._id.toString()
     await blogCollection.insertMany(blogsDb)
-    // ? Обязательно дропать базу перед каждым тестом
 
     const res = await req
       .get(`${SETTINGS.PATH.BLOGS}/${setId}`)
@@ -138,8 +136,6 @@ describe(SETTINGS.PATH.BLOGS, () => {
     const codedAuth = converStringIntoBase64(loginPassword)
 
     const res = await req
-      // .delete(`${SETTINGS.PATH.BLOGS}/${4052}`) 
-      // ? как обработать ошибку случайной строки вместо ObjectId
       .delete(`${SETTINGS.PATH.BLOGS}/111a01f1cfa1108111d01a0a`)
       .set({ 'Authorization': 'Basic ' + codedAuth })
       .expect(404)
@@ -223,4 +219,3 @@ describe(SETTINGS.PATH.BLOGS, () => {
     expect(res.body.errorsMessages[0].field).toEqual('websiteUrl')
   })
 })
-// ? Тесты не выключаются 
