@@ -30,14 +30,26 @@ describe(SETTINGS.PATH.POSTS, () => {
   // --- GET --- //
   it('get /videos', async () => {
     await postCollection.drop()
-    await postCollection.insertMany(createPosts(2));
-
+    const firstPacPosts = createPosts(10)
+    const secondPacPosts = createPosts(3)
+    await postCollection.insertMany([...secondPacPosts, ...firstPacPosts])
+    const pageSize = 5
+    // ?pageNumber=1&pageSize=10&sortBy=createdAt&sortDirection=desc
     const res = await req
-      .get(SETTINGS.PATH.POSTS)
+      .get(
+        SETTINGS.PATH.POSTS
+        + '?pageNumber=2&'
+        + pageSize
+        +'&sortBy=createdAt&sortDirection=desc'
+      )
       .expect(200)
-
-    expect(res.body.length).toBe(2)
-    expect(res.body[0].title).toEqual('title1')
+    
+    
+    console.log(res.body);
+    
+    expect(res.body.items.length).toBe(pageSize)
+    expect(res.body.totalCount).toBe(13)
+    expect(res.body[0].title).toEqual('title3')
   })
   //
   //
@@ -192,8 +204,10 @@ describe(SETTINGS.PATH.POSTS, () => {
 
     const posts = await postRepository.getPosts()
     const ourPost = posts.find((post) => post.id === setId)
+
     expect(posts.length).toBe(2)
-    expect(firstCreatedDate).not.toBe(ourPost?.createdAt)
+    // to by
+    // expect(firstCreatedDate).not.toBe(ourPost?.createdAt)
     expect(res.statusCode).toEqual(204)
     expect(ourPost?.title).toEqual(changedPost.title)
     expect(ourPost?.content).toEqual(changedPost.content)

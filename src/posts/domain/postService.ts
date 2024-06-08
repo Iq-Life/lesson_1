@@ -1,43 +1,24 @@
 import { ObjectId } from "mongodb"
 import { blogCollection, postCollection } from "../../db/db"
-import { InputPostType, PostType } from "../../types/postsTypes"
 import { PostDBType } from "../../types/db-types/postsDBTypes"
-import { PagesTotalCountItemsDb, QueryType, ResReqType } from "../../types/defaultsTypes"
-import { pagesCount, skipFunc } from "../../helpers/helpers"
+import { InputPostType, PostType } from "../../types/postsTypes"
+import { QueryType, ResReqType } from "../../types/defaultsTypes"
+import { postRepository } from "../repositories/postRepository"
 
-const sorted = (query: QueryType) => {
-  const sorted: any = {}
-  if (query.sortBy) {
-    sorted[query.sortBy] = query.sortDirection === 'asc' ? 1 : -1
-  }
 
-  return sorted
-}
-
-export const postRepository = {
-  async findPosts(query: QueryType): Promise<ResReqType<PostDBType>> {
-    const totalCount = await postCollection.countDocuments()
-    console.log('------', totalCount);
-    
-    const postsDb = await postCollection.find({})
-    .sort(sorted(query))
-    .skip(skipFunc(query))
-    .limit(+query.pageSize)
-    .toArray()
-
+export const postService = {
+  async findPosts(param: QueryType): Promise<ResReqType<PostType>> {
+    const res = await postRepository.findPosts(param)
     return {
-      page: +query.pageNumber,
-      pageSize: +query.pageSize,
-      pagesCount: pagesCount(query),
-      totalCount,
-      items: postsDb
+      ...res,
+      items: res.items.map((postDb) => this.mapToOutput(postDb))
     }
   },
   async findPost(postId: ObjectId): Promise<PostDBType | null> {
     return await postCollection.findOne({_id: postId})
   },
 
-  async getPosts(): Promise<PostType[]> {
+  async getPosts(queryParam: QueryType): Promise<PostType[]> {
     const postsDB = await postCollection.find({}).toArray()
     return postsDB.map((post) => this.mapToOutput(post))
   },

@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
-import { postRepository } from '../repositories/postRepository'
 import { PostType } from '../../types/postsTypes'
+import { QueryType, ResReqType } from '../../types/defaultsTypes'
+import { postService } from '../domain/postService'
 
-export const getPostsController = async (req: Request, res: Response<PostType[]>) => {
-  const allPosts = await postRepository.getPosts()
+export const getPostsController = async (req: Request<any, any, any, QueryType>, res: Response<ResReqType<PostType>>) => {
+  const allPosts = await postService.findPosts(req.query)
   res
     .status(200)
     .json(allPosts)
