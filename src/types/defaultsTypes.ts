@@ -6,11 +6,12 @@ export type ResReqType<I> =  {
   items: I[]
 }
 
+export type SortDirectionType = 'asc' | 'desc'
 export type QueryType= {
   pageNumber: string
   pageSize: string
   sortBy: string
-  sortDirection: 'asc' | 'desc'
+  sortDirection: SortDirectionType
 }
 
 export type PagesTotalCountItemsDb <I> = {

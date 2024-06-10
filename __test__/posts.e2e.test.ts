@@ -30,26 +30,22 @@ describe(SETTINGS.PATH.POSTS, () => {
   // --- GET --- //
   it('get /videos', async () => {
     await postCollection.drop()
-    const firstPacPosts = createPosts(10)
-    const secondPacPosts = createPosts(3)
+    const firstPacPosts = createPosts(13)
+    const secondPacPosts = firstPacPosts.splice(3, 3)
     await postCollection.insertMany([...secondPacPosts, ...firstPacPosts])
     const pageSize = 5
-    // ?pageNumber=1&pageSize=10&sortBy=createdAt&sortDirection=desc
+
     const res = await req
       .get(
         SETTINGS.PATH.POSTS
-        + '?pageNumber=2&'
-        + pageSize
-        +'&sortBy=createdAt&sortDirection=desc'
+        + `?pageNumber=2&pageSize=${pageSize}&sortBy=title&sortDirection=asc`
       )
       .expect(200)
-    
-    
-    console.log(res.body);
-    
+
     expect(res.body.items.length).toBe(pageSize)
     expect(res.body.totalCount).toBe(13)
-    expect(res.body[0].title).toEqual('title3')
+    expect(res.body.pagesCount).toBe(3)
+    expect(res.body.items[0].title).toEqual('title2')
   })
   //
   //

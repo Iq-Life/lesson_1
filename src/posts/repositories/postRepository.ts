@@ -2,33 +2,22 @@ import { ObjectId } from "mongodb"
 import { blogCollection, postCollection } from "../../db/db"
 import { InputPostType, PostType } from "../../types/postsTypes"
 import { PostDBType } from "../../types/db-types/postsDBTypes"
-import { PagesTotalCountItemsDb, QueryType, ResReqType } from "../../types/defaultsTypes"
-import { pagesCount, skipFunc } from "../../helpers/helpers"
-
-const sorted = (query: QueryType) => {
-  const sorted: any = {}
-  if (query.sortBy) {
-    sorted[query.sortBy] = query.sortDirection === 'asc' ? 1 : -1
-  }
-
-  return sorted
-}
+import { QueryType, ResReqType } from "../../types/defaultsTypes"
+import { pagesCountFunc, skipFunc, sortFunc } from "../../helpers/helpers"
 
 export const postRepository = {
   async findPosts(query: QueryType): Promise<ResReqType<PostDBType>> {
     const totalCount = await postCollection.countDocuments()
-    console.log('------', totalCount);
-    
     const postsDb = await postCollection.find({})
-    .sort(sorted(query))
-    .skip(skipFunc(query))
+    .sort(sortFunc(query.sortBy, query.sortDirection))
+    .skip(skipFunc(+query.pageSize, +query.pageNumber))
     .limit(+query.pageSize)
     .toArray()
 
     return {
       page: +query.pageNumber,
       pageSize: +query.pageSize,
-      pagesCount: pagesCount(query),
+      pagesCount: pagesCountFunc(+query.pageSize, totalCount),
       totalCount,
       items: postsDb
     }
