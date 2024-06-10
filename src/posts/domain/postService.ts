@@ -4,27 +4,38 @@ import { PostDBType } from "../../types/db-types/postsDBTypes"
 import { InputPostType, PostType } from "../../types/postsTypes"
 import { QueryType, ResReqType } from "../../types/defaultsTypes"
 import { postRepository } from "../repositories/postRepository"
+import { blogsRepository } from "../../Blogs/repositories/blogsRepository"
+import { pagesCountFunc } from "../../helpers/helpers"
 
 
 export const postService = {
-  async findPosts(param: QueryType): Promise<ResReqType<PostType>> {
-    const res = await postRepository.findPosts(param)
+  // async findPosts(param: QueryType): Promise<ResReqType<PostType>> {
+  //   const res = await postRepository.findPosts(param)
+  //   return {
+  //     ...res,
+  //     items: res.items.map((postDb) => this.mapToOutput(postDb))
+  //   }
+  // },
+  // async findPost(postId: ObjectId): Promise<PostDBType | null> {
+  //   return await postCollection.findOne({_id: postId})
+  // },
+
+  async getPosts(query: QueryType): Promise<ResReqType<PostType>> {
+    const totalCount = await postRepository.postTotalCount()
+    const postsDb = await postRepository.getPosts(query)
+    const pagesCount = pagesCountFunc(+query.pageSize, totalCount)
+
     return {
-      ...res,
-      items: res.items.map((postDb) => this.mapToOutput(postDb))
+      page: +query.pageNumber,
+      pageSize: +query.pageSize,
+      pagesCount,
+      totalCount,
+      items: postsDb.map((post) => this.mapToOutput(post))
     }
   },
-  async findPost(postId: ObjectId): Promise<PostDBType | null> {
-    return await postCollection.findOne({_id: postId})
-  },
 
-  async getPosts(queryParam: QueryType): Promise<PostType[]> {
-    const postsDB = await postCollection.find({}).toArray()
-    return postsDB.map((post) => this.mapToOutput(post))
-  },
-
-  async findForOutput(postId: string): Promise<PostType | null> {
-    const post = await postCollection.findOne({_id: new ObjectId(postId)})
+  async findPost(postId: string): Promise<PostType | null> {
+    const post = await postRepository.findPost(postId)
     return  post ? this.mapToOutput(post) : null
   },
 
@@ -42,7 +53,7 @@ export const postService = {
 
   async createPost(postData: InputPostType): Promise<{error?: string, id?: string}> {
     try {
-      const blog = await blogCollection.findOne({_id: new ObjectId(postData.blogId)})
+      const blog = await blogsRepository.findBlogById(postData.blogId)
       const newPost: PostDBType = { 
         ...postData,
         _id: new ObjectId(),
@@ -50,7 +61,7 @@ export const postService = {
         blogName: blog!.name,
         createdAt: new Date().toISOString()
       } 
-      const insertedInfo = await postCollection.insertOne(newPost)
+      const insertedInfo = await postRepository.createPost(newPost)
 
       return {id: insertedInfo.insertedId.toString()}
     } catch (error) {

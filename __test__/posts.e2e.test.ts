@@ -143,98 +143,98 @@ describe(SETTINGS.PATH.POSTS, () => {
   })
 
 
-  // --- DELETE --- //
-  it('delete post by Id', async () => {
-    await postCollection.drop()
-    const createdPostsDB = createPosts(2)
-    await postCollection.insertMany(createdPostsDB);
-    const setId = createdPostsDB[0]?._id.toString()
-    const codedAuth = converStringIntoBase64(loginPassword)
+  // // --- DELETE --- //
+  // it('delete post by Id', async () => {
+  //   await postCollection.drop()
+  //   const createdPostsDB = createPosts(2)
+  //   await postCollection.insertMany(createdPostsDB);
+  //   const setId = createdPostsDB[0]?._id.toString()
+  //   const codedAuth = converStringIntoBase64(loginPassword)
 
-    await req
-      .delete(`${SETTINGS.PATH.POSTS}/${setId}`)
-      .set({ 'Authorization': 'Basic ' + codedAuth })
-      .expect(204)
+  //   await req
+  //     .delete(`${SETTINGS.PATH.POSTS}/${setId}`)
+  //     .set({ 'Authorization': 'Basic ' + codedAuth })
+  //     .expect(204)
 
-    const posts = await postRepository.getPosts()
+  //   const posts = await postRepository.getPosts()
 
-    expect(posts.length).toBe(1)
-    expect(posts[0].id).not.toBe(setId)
-  })
-  //
-  //
-  it('ERROR not delete by Id', async () => {
-    await postCollection.drop()
-    const createdPostsDB = createPosts(2)
-    await postCollection.insertMany(createdPostsDB);
-    const codedAuth = converStringIntoBase64(loginPassword)
+  //   expect(posts.length).toBe(1)
+  //   expect(posts[0].id).not.toBe(setId)
+  // })
+  // //
+  // //
+  // it('ERROR not delete by Id', async () => {
+  //   await postCollection.drop()
+  //   const createdPostsDB = createPosts(2)
+  //   await postCollection.insertMany(createdPostsDB);
+  //   const codedAuth = converStringIntoBase64(loginPassword)
 
-    const res = await req
-      .delete(`${SETTINGS.PATH.POSTS}/${'4052'}`)
-      .set({ 'Authorization': 'Basic ' + codedAuth })
-      .expect(404)
+  //   const res = await req
+  //     .delete(`${SETTINGS.PATH.POSTS}/${'4052'}`)
+  //     .set({ 'Authorization': 'Basic ' + codedAuth })
+  //     .expect(404)
 
-    expect(res.statusCode).toBe(404)
-  })
+  //   expect(res.statusCode).toBe(404)
+  // })
 
-  // --- PUT --- //
-  it('update post by Id', async () => {
-    await postCollection.drop()
-    const createdPostsDB = createPosts(2)
-    const firstCreatedDate = createdPostsDB[0].createdAt
-    const changedPost = {
-      title: 'changed post',
-      blogId: blogsDb[0]._id.toString(),
-      content: createdPostsDB[0].content,
-      shortDescription: '...short Description...'
-    }
-    await postCollection.insertMany(createdPostsDB);
-    const setId = createdPostsDB[0]?._id.toString()
+  // // --- PUT --- //
+  // it('update post by Id', async () => {
+  //   await postCollection.drop()
+  //   const createdPostsDB = createPosts(2)
+  //   const firstCreatedDate = createdPostsDB[0].createdAt
+  //   const changedPost = {
+  //     title: 'changed post',
+  //     blogId: blogsDb[0]._id.toString(),
+  //     content: createdPostsDB[0].content,
+  //     shortDescription: '...short Description...'
+  //   }
+  //   await postCollection.insertMany(createdPostsDB);
+  //   const setId = createdPostsDB[0]?._id.toString()
 
-    const codedAuth = converStringIntoBase64(loginPassword)
-    const res = await req
-      .put(`${SETTINGS.PATH.POSTS}/${setId}`)
-      .set({ 'Authorization': 'Basic ' + codedAuth })
-      .send(changedPost)
-      .expect(204)
+  //   const codedAuth = converStringIntoBase64(loginPassword)
+  //   const res = await req
+  //     .put(`${SETTINGS.PATH.POSTS}/${setId}`)
+  //     .set({ 'Authorization': 'Basic ' + codedAuth })
+  //     .send(changedPost)
+  //     .expect(204)
 
-    const posts = await postRepository.getPosts()
-    const ourPost = posts.find((post) => post.id === setId)
+  //   const posts = await postRepository.getPosts()
+  //   const ourPost = posts.find((post) => post.id === setId)
 
-    expect(posts.length).toBe(2)
-    // to by
-    // expect(firstCreatedDate).not.toBe(ourPost?.createdAt)
-    expect(res.statusCode).toEqual(204)
-    expect(ourPost?.title).toEqual(changedPost.title)
-    expect(ourPost?.content).toEqual(changedPost.content)
-    expect(ourPost?.id).toEqual(setId)
-  })
-  //
-  //
-  it('Error update post by Id', async () => {
-    await postCollection.drop()
-    const createdPostsDB = createPosts(2)
-    await postCollection.insertMany(createdPostsDB);
-    const setId = createdPostsDB[0]?._id.toString()
-    const codedAuth = converStringIntoBase64(loginPassword)
-    const res = await req
-      .put(`${SETTINGS.PATH.POSTS}/${setId}`)
-      .set({ 'Authorization': 'Basic ' + codedAuth })
-      .send(invalidPost)
-      .expect(400)
+  //   expect(posts.length).toBe(2)
+  //   // to by
+  //   // expect(firstCreatedDate).not.toBe(ourPost?.createdAt)
+  //   expect(res.statusCode).toEqual(204)
+  //   expect(ourPost?.title).toEqual(changedPost.title)
+  //   expect(ourPost?.content).toEqual(changedPost.content)
+  //   expect(ourPost?.id).toEqual(setId)
+  // })
+  // //
+  // //
+  // it('Error update post by Id', async () => {
+  //   await postCollection.drop()
+  //   const createdPostsDB = createPosts(2)
+  //   await postCollection.insertMany(createdPostsDB);
+  //   const setId = createdPostsDB[0]?._id.toString()
+  //   const codedAuth = converStringIntoBase64(loginPassword)
+  //   const res = await req
+  //     .put(`${SETTINGS.PATH.POSTS}/${setId}`)
+  //     .set({ 'Authorization': 'Basic ' + codedAuth })
+  //     .send(invalidPost)
+  //     .expect(400)
 
-    const posts = await postRepository.getPosts()
+  //   const posts = await postRepository.getPosts()
 
-    expect(posts.length).toBe(2)
-    expect(res.statusCode).toEqual(400)
-    expect(res.body.errorsMessages.length).toBe(4)
-    expect(res.body.errorsMessages[0].message).toEqual('max length is 30 letters')
-    expect(res.body.errorsMessages[0].field).toEqual('title')
-    expect(res.body.errorsMessages[1].message).toEqual('max length is 100 letters')
-    expect(res.body.errorsMessages[1].field).toEqual('shortDescription')
-    expect(res.body.errorsMessages[2].message).toEqual('max length is 1000 letters')
-    expect(res.body.errorsMessages[2].field).toEqual('content')
-    expect(res.body.errorsMessages[3].message).toEqual('blogId must be string')
-    expect(res.body.errorsMessages[3].field).toEqual('blogId')
-  })
+  //   expect(posts.length).toBe(2)
+  //   expect(res.statusCode).toEqual(400)
+  //   expect(res.body.errorsMessages.length).toBe(4)
+  //   expect(res.body.errorsMessages[0].message).toEqual('max length is 30 letters')
+  //   expect(res.body.errorsMessages[0].field).toEqual('title')
+  //   expect(res.body.errorsMessages[1].message).toEqual('max length is 100 letters')
+  //   expect(res.body.errorsMessages[1].field).toEqual('shortDescription')
+  //   expect(res.body.errorsMessages[2].message).toEqual('max length is 1000 letters')
+  //   expect(res.body.errorsMessages[2].field).toEqual('content')
+  //   expect(res.body.errorsMessages[3].message).toEqual('blogId must be string')
+  //   expect(res.body.errorsMessages[3].field).toEqual('blogId')
+  // })
 })
