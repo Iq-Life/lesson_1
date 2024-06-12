@@ -4,7 +4,7 @@ import { blogCollection, loginPassword, postCollection, runDB } from '../src/db/
 import { createBlogs, createPosts } from './dataset'
 import { InputPostType } from '../src/types/postsTypes'
 import { converStringIntoBase64 } from '../src/helpers/helpers'
-import { postRepository } from '../src/posts/repositories/postRepository'
+import { postService } from '../src/posts/domain/postService'
 
 const invalidPost: any = {
   title: 'length 31 symbols sssssssssssss',
@@ -143,39 +143,44 @@ describe(SETTINGS.PATH.POSTS, () => {
   })
 
 
-  // // --- DELETE --- //
-  // it('delete post by Id', async () => {
-  //   await postCollection.drop()
-  //   const createdPostsDB = createPosts(2)
-  //   await postCollection.insertMany(createdPostsDB);
-  //   const setId = createdPostsDB[0]?._id.toString()
-  //   const codedAuth = converStringIntoBase64(loginPassword)
+  // --- DELETE --- //
+  it('delete post by Id', async () => {
+    await postCollection.drop()
+    const createdPostsDB = createPosts(2)
+    await postCollection.insertMany(createdPostsDB);
+    const setId = createdPostsDB[0]?._id.toString()
+    const codedAuth = converStringIntoBase64(loginPassword)
 
-  //   await req
-  //     .delete(`${SETTINGS.PATH.POSTS}/${setId}`)
-  //     .set({ 'Authorization': 'Basic ' + codedAuth })
-  //     .expect(204)
+    await req
+      .delete(`${SETTINGS.PATH.POSTS}/${setId}`)
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .expect(204)
 
-  //   const posts = await postRepository.getPosts()
+    const posts = await postService.getPosts({
+      pageNumber: '1',
+      pageSize: '50',
+      sortBy: 'title',
+      sortDirection: 'asc'
+    })
 
-  //   expect(posts.length).toBe(1)
-  //   expect(posts[0].id).not.toBe(setId)
-  // })
-  // //
-  // //
-  // it('ERROR not delete by Id', async () => {
-  //   await postCollection.drop()
-  //   const createdPostsDB = createPosts(2)
-  //   await postCollection.insertMany(createdPostsDB);
-  //   const codedAuth = converStringIntoBase64(loginPassword)
+    expect(posts.items.length).toBe(1)
+    expect(posts.items[0].id).not.toBe(setId)
+  })
+  //
+  //
+  it('ERROR not delete by Id', async () => {
+    await postCollection.drop()
+    const createdPostsDB = createPosts(2)
+    await postCollection.insertMany(createdPostsDB);
+    const codedAuth = converStringIntoBase64(loginPassword)
 
-  //   const res = await req
-  //     .delete(`${SETTINGS.PATH.POSTS}/${'4052'}`)
-  //     .set({ 'Authorization': 'Basic ' + codedAuth })
-  //     .expect(404)
+    const res = await req
+      .delete(`${SETTINGS.PATH.POSTS}/${'4052'}`)
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .expect(404)
 
-  //   expect(res.statusCode).toBe(404)
-  // })
+    expect(res.statusCode).toBe(404)
+  })
 
   // // --- PUT --- //
   // it('update post by Id', async () => {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { OutputVideoType } from '../../types/videosTypes'
-import { postRepository } from '../repositories/postRepository'
+import { postService } from '../domain/postService'
 
 type ParamsType = {
   id: string
@@ -9,7 +9,7 @@ type ParamsType = {
 type ReqQueryType = string
 
 export const deletePostController = async (req: Request<ParamsType, any, ReqQueryType>, res: Response<OutputVideoType>) => {
-  const isDeleted = await postRepository.deletePost(req.params.id);
+  const isDeleted = await postService.deletePost(req.params.id);
 
   if (isDeleted) {
     res
