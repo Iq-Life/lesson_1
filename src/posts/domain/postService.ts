@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb"
-import { blogCollection, postCollection } from "../../db/db"
 import { PostDBType } from "../../types/db-types/postsDBTypes"
 import { InputPostType, PostType } from "../../types/postsTypes"
 import { QueryType, ResReqType } from "../../types/defaultsTypes"
@@ -9,16 +8,17 @@ import { pagesCountFunc } from "../../helpers/helpers"
 
 
 export const postService = {
-  // async findPosts(param: QueryType): Promise<ResReqType<PostType>> {
-  //   const res = await postRepository.findPosts(param)
-  //   return {
-  //     ...res,
-  //     items: res.items.map((postDb) => this.mapToOutput(postDb))
-  //   }
-  // },
-  // async findPost(postId: ObjectId): Promise<PostDBType | null> {
-  //   return await postCollection.findOne({_id: postId})
-  // },
+  mapToOutput (post: PostDBType): PostType {
+    return {
+      id: post._id.toString(),
+      title: post.title,
+      shortDescription: post.shortDescription,
+      content: post.content,
+      blogId: post.blogId.toString(),
+      blogName: post.blogName,
+      createdAt: post.createdAt
+    }
+  },
 
   async getPosts(query: QueryType): Promise<ResReqType<PostType>> {
     const totalCount = await postRepository.postTotalCount()
@@ -39,21 +39,10 @@ export const postService = {
     return  post ? this.mapToOutput(post) : null
   },
 
-  mapToOutput (post: PostDBType): PostType {
-    return {
-      id: post._id.toString(),
-      title: post.title,
-      shortDescription: post.shortDescription,
-      content: post.content,
-      blogId: post.blogId.toString(),
-      blogName: post.blogName,
-      createdAt: post.createdAt
-    }
-  },
-
   async createPost(postData: InputPostType): Promise<{error?: string, id?: string}> {
     try {
       const blog = await blogsRepository.findBlogById(postData.blogId)
+      // ? Куда вынести ObjectId service или repasitory
       const newPost: PostDBType = { 
         ...postData,
         _id: new ObjectId(),
@@ -78,14 +67,7 @@ export const postService = {
   },
 
   async updatePost(id: string, inputPost: InputPostType): Promise<boolean> {
-    const changedPost = { 
-      ...inputPost,
-      blogId: new ObjectId(inputPost.blogId)
-    } 
-    const insertedInfo = await postCollection.updateOne({
-      _id: new ObjectId(id)},
-      { $set: changedPost }
-    )
+    const insertedInfo = await postRepository.updatePost(id, inputPost)
     return !!insertedInfo.modifiedCount
   }
 }

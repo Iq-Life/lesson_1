@@ -1,4 +1,4 @@
-import { DeleteResult, InsertOneResult, ObjectId, WithId } from "mongodb"
+import { DeleteResult, InsertOneResult, ObjectId, UpdateResult, WithId } from "mongodb"
 import { blogCollection, postCollection } from "../../db/db"
 import { InputPostType, PostType } from "../../types/postsTypes"
 import { PostDBType } from "../../types/db-types/postsDBTypes"
@@ -34,15 +34,15 @@ export const postRepository = {
     return postCollection.deleteOne({_id: new ObjectId(id)})
   },
 
-  async updatePost(id: string, inputPost: InputPostType): Promise<boolean> {
+  async updatePost(id: string, inputPost: InputPostType): Promise<UpdateResult<PostDBType>> {
     const changedPost = { 
       ...inputPost,
       blogId: new ObjectId(inputPost.blogId)
-    } 
+    }
     const insertedInfo = await postCollection.updateOne({
       _id: new ObjectId(id)},
       { $set: changedPost }
     )
-    return !!insertedInfo.modifiedCount
+    return insertedInfo
   }
 }

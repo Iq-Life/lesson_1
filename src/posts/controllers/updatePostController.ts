@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { InputPostType, PostType } from '../../types/postsTypes'
-import { postRepository } from '../repositories/postRepository'
+import { postService } from '../domain/postService'
 
 type ParamsType = {
   id: string
@@ -8,7 +8,7 @@ type ParamsType = {
 type ResBodyType = PostType
 
 export const updatePostController = async (req: Request<ParamsType, any, InputPostType>, res: Response<ResBodyType>) => {
-  const isUpdatePost = await postRepository.updatePost(req.params.id, req.body)
+  const isUpdatePost = await postService.updatePost(req.params.id, req.body)
 
   if(isUpdatePost) {
     res
