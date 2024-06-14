@@ -56,31 +56,31 @@ const defaultQueryParams= (pageSize: number, searchNameTerm?: string): string =>
     expect(res.body.id).toBe(setId)
   })
 
-//   // ---- POST --- //
-//   it('should create blog', async () => {
-//     await blogCollection.drop()
+  // ---- POST --- //
+  it('should create blog', async () => {
+    await blogCollection.drop()
     
-//     const newBlog: InputBlogType = {
-//       name: 'new blog',
-//       description: '...Description...',
-//       websiteUrl: 'https://www.leningrad.com'
-//     }
+    const newBlog: InputBlogType = {
+      name: 'new blog',
+      description: '...Description...',
+      websiteUrl: 'https://www.leningrad.com'
+    }
 
-//     const codedAuth = converStringIntoBase64(loginPassword)
+    const codedAuth = converStringIntoBase64(loginPassword)
 
-//     const res = await req
-//       .post(SETTINGS.PATH.BLOGS)
-//       .set({ 'Authorization': 'Basic ' + codedAuth })
-//       .send(newBlog)
-//       .expect(201)
+    const res = await req
+      .post(SETTINGS.PATH.BLOGS)
+      .set({ 'Authorization': 'Basic ' + codedAuth })
+      .send(newBlog)
+      .expect(201)
 
-//     // expect(db.blogs.length).toBe(1)
-//     expect(res.body.name).toEqual('new blog')
-//     expect(res.body.createdAt).toMatch(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/)
-//     expect(res.body.description).toEqual(newBlog.description)
-//   })
-// //
-// //
+    // expect(db.blogs.length).toBe(1)
+    expect(res.body.name).toEqual('new blog')
+    expect(res.body.createdAt).toMatch(/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/)
+    expect(res.body.description).toEqual(newBlog.description)
+  })
+//
+//
 //   it('ERORR invalid length blog: name, description, websiteUrl', async () => {
 //     const codedAuth = converStringIntoBase64(loginPassword)
 

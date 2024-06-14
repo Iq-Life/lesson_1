@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { blogRepository } from '../repositories/blogRepository'
 import { BlogType, InputBlogType } from '../../types/blogsType'
 
 type ParamsType = {
@@ -8,12 +7,12 @@ type ParamsType = {
 type ResBodyType = BlogType
 
 export const updateBlogController = async (req: Request<ParamsType, any, InputBlogType>, res: Response<ResBodyType>) => {
-  const isUpdateBlog = await blogRepository.updateBlog(req.params.id, req.body)
-  if(isUpdateBlog) {
-    res
-      .sendStatus(204)
-  } else {
-    res
-      .sendStatus(404)
-  }
+  // const isUpdateBlog = await blogRepository.updateBlog(req.params.id, req.body)
+  // if(isUpdateBlog) {
+  //   res
+  //     .sendStatus(204)
+  // } else {
+  //   res
+  //     .sendStatus(404)
+  // }
 }

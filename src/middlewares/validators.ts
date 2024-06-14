@@ -1,7 +1,7 @@
 import { ValidationChain, body } from "express-validator";
 import { Request, Response, NextFunction } from "express";
 import { ObjectId } from "mongodb";
-import { blogRepository } from "../Blogs/repositories/blogRepository";
+import { blogRepository } from "../blogs/repositories/blogRepository";
 import { blogCollection } from "../db/db";
 
 type LengthValidType = {

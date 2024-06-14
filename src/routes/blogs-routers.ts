@@ -1,12 +1,12 @@
 import { Router } from "express"
-import { getBlogsController } from "../Blogs/controllers/getBlogsController"
-import { getBlogController } from "../Blogs/controllers/getBlogController"
-import { createBlogController } from "../Blogs/controllers/createBlogController"
+import { getBlogsController } from "../blogs/controllers/getBlogsController"
+import { getBlogController } from "../blogs/controllers/getBlogController"
+import { createBlogController } from "../blogs/controllers/createBlogController"
 import { check } from "express-validator"
 import { idValid, lengthValid, urlValid } from "../middlewares/validators"
 import { errorsValidation } from "../middlewares/errors-validation"
-import { deleteBlogController } from "../Blogs/controllers/deleteBlogController"
-import { updateBlogController } from "../Blogs/controllers/updateBlogController"
+import { deleteBlogController } from "../blogs/controllers/deleteBlogController"
+import { updateBlogController } from "../blogs/controllers/updateBlogController"
 import { authMiddleware } from "../middlewares/authValidation"
 
 export const blogsRouter = Router()

@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb"
 import { blogCollection } from "../db/db"
 import { BlogType, InputBlogType, QueryBlogParams } from "../types/blogsType"
 import { BlogDBType } from "../types/db-types/blogsDBTypes"
-import { blogRepository } from "../Blogs/repositories/blogRepository"
+import { blogRepository } from "../blogs/repositories/blogRepository"
 import { ResReqType } from "../types/defaultsTypes"
 import { pagesCountFunc } from "../helpers/helpers"
 
@@ -37,7 +37,7 @@ export const blogService = {
       createdAt: new Date().toISOString(),
       isMembership:	false
     }
-    const insertedInfo = await blogCollection.insertOne(newBlog)
+    const insertedInfo = await blogRepository.createBlog(newBlog)
 
     if(insertedInfo.insertedId) {
       return this.mapBlogToOutput(newBlog)

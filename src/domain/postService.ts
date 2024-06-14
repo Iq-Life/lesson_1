@@ -3,7 +3,7 @@ import { PostDBType } from "../types/db-types/postsDBTypes"
 import { InputPostType, PostType } from "../types/postsTypes"
 import { QueryType, ResReqType } from "../types/defaultsTypes"
 import { postRepository } from "../posts/repositories/postRepository"
-import { blogRepository } from "../Blogs/repositories/blogRepository"
+import { blogRepository } from "../blogs/repositories/blogRepository"
 import { pagesCountFunc } from "../helpers/helpers"
 
 
