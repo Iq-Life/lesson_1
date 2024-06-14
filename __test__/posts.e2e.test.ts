@@ -4,7 +4,7 @@ import { blogCollection, loginPassword, postCollection, runDB } from '../src/db/
 import { createBlogs, createPosts } from './dataset'
 import { InputPostType } from '../src/types/postsTypes'
 import { converStringIntoBase64 } from '../src/helpers/helpers'
-import { postService } from '../src/posts/domain/postService'
+import { postService } from '../src/domain/postService'
 import { QueryType } from '../src/types/defaultsTypes'
 
 const invalidPost: any = {

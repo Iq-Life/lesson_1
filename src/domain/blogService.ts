@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb"
-import { blogCollection } from "../../db/db"
-import { BlogType, InputBlogType, QueryBlogParams } from "../../types/blogsType"
-import { BlogDBType } from "../../types/db-types/blogsDBTypes"
-import { blogRepository } from "../../Blogs/repositories/blogRepository"
-import { ResReqType } from "../../types/defaultsTypes"
-import { pagesCountFunc } from "../../helpers/helpers"
+import { blogCollection } from "../db/db"
+import { BlogType, InputBlogType, QueryBlogParams } from "../types/blogsType"
+import { BlogDBType } from "../types/db-types/blogsDBTypes"
+import { blogRepository } from "../Blogs/repositories/blogRepository"
+import { ResReqType } from "../types/defaultsTypes"
+import { pagesCountFunc } from "../helpers/helpers"
 
 
 export const blogService = {

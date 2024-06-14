@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { ErrorType } from '../../types/errorType';
 import { InputPostType, PostType } from '../../types/postsTypes';
-import { postService } from '../domain/postService';
+import { postService } from '../../domain/postService';
 
 type ResBodyType = PostType| null | ErrorType
 

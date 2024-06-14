@@ -43,18 +43,18 @@ const defaultQueryParams= (pageSize: number, searchNameTerm?: string): string =>
   })
   //  
   //
-//   it('get by id /blogs/id', async () => {
-//     await blogCollection.drop()
-//     const blogsDb = createBlogs(2)
-//     const setId = blogsDb[0]._id.toString()
-//     await blogCollection.insertMany(blogsDb)
+  it('get by id /blogs/id', async () => {
+    await blogCollection.drop()
+    const blogsDb = createBlogs(2)
+    const setId = blogsDb[0]._id.toString()
+    await blogCollection.insertMany(blogsDb)
 
-//     const res = await req
-//       .get(`${SETTINGS.PATH.BLOGS}/${setId}`)
-//       .expect(200)
+    const res = await req
+      .get(`${SETTINGS.PATH.BLOGS}/${setId}`)
+      .expect(200)
 
-//     expect(res.body.id).toBe(setId)
-//   })
+    expect(res.body.id).toBe(setId)
+  })
 
 //   // ---- POST --- //
 //   it('should create blog', async () => {

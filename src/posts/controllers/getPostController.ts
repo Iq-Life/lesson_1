@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { PostType } from '../../types/postsTypes'
 import { postRepository } from '../repositories/postRepository'
-import { postService } from '../domain/postService'
+import { postService } from '../../domain/postService'
 
 type ParamsType = {
   id: string

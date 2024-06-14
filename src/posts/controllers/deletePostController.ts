@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { OutputVideoType } from '../../types/videosTypes'
-import { postService } from '../domain/postService'
+import { postService } from '../../domain/postService'
 
 type ParamsType = {
   id: string
