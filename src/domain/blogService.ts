@@ -45,8 +45,6 @@ export const blogService = {
     return null
   },
 
-  
-
   async deleteBlog(id: string): Promise<boolean> {
     const deletedInfo = await blogCollection.deleteOne({_id: new ObjectId(id)})
     return !!deletedInfo.deletedCount
@@ -60,6 +58,7 @@ export const blogService = {
     })
     return !!infoUdated.modifiedCount 
   },
+
   mapBlogToOutput(blogDb: BlogDBType): BlogType {
     return {
       id: blogDb._id.toString(),
