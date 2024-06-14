@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { blogsRepository } from '../repositories/blogsRepository'
+import { blogRepository } from '../repositories/blogRepository'
 import { BlogType } from '../../types/blogsType'
 
 type ParamsType = {
@@ -9,7 +9,7 @@ type ParamsType = {
 type ReqQueryType = string
 
 export const getBlogController = async (req: Request<ParamsType, any, ReqQueryType>, res: Response<BlogType>) => {  
-  const findBlog = await blogsRepository.findBlogById(req.params.id)
+  const findBlog = await blogRepository.findBlogById(req.params.id)
 
   if (findBlog) {
     res

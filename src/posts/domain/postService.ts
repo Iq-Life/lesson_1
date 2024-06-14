@@ -3,7 +3,7 @@ import { PostDBType } from "../../types/db-types/postsDBTypes"
 import { InputPostType, PostType } from "../../types/postsTypes"
 import { QueryType, ResReqType } from "../../types/defaultsTypes"
 import { postRepository } from "../repositories/postRepository"
-import { blogsRepository } from "../../Blogs/repositories/blogsRepository"
+import { blogRepository } from "../../Blogs/repositories/blogRepository"
 import { pagesCountFunc } from "../../helpers/helpers"
 
 
@@ -41,7 +41,7 @@ export const postService = {
 
   async createPost(postData: InputPostType): Promise<{error?: string, id?: string}> {
     try {
-      const blog = await blogsRepository.findBlogById(postData.blogId)
+      const blog = await blogRepository.findBlog(postData.blogId)
       // ? Куда вынести ObjectId service или repasitory
       const newPost: PostDBType = { 
         ...postData,

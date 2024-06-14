@@ -1,17 +1,18 @@
 import { ObjectId } from "mongodb"
 import { blogCollection } from "../../db/db"
-import { BlogType, InputBlogType } from "../../types/blogsType"
+import { BlogType, InputBlogType, QueryBlogParams } from "../../types/blogsType"
 import { BlogDBType } from "../../types/db-types/blogsDBTypes"
+import { searchFunc } from "../../helpers/helpers"
 
-export const blogsRepository = {
-  async getBlogs(): Promise<BlogType[]> {
-    const blogs = await blogCollection.find({}).toArray()
-    return blogs.map((blog) => this.mapBlogToOutput(blog))
+export const blogRepository = {
+  async getBlogs(qeryParam: QueryBlogParams): Promise<BlogDBType[]> {
+    return await blogCollection.find(searchFunc('name', qeryParam.searchNameTerm)).toArray()
   },
-
-  async findBlogById(id: string): Promise<BlogType | null> {
-    const findedBlog = await blogCollection.findOne({_id: new ObjectId(id)})
-    return findedBlog ? this.mapBlogToOutput(findedBlog) : null
+  async countBlogs (qeryParam?: QueryBlogParams): Promise<number>{
+    return blogCollection.countDocuments(searchFunc('name', qeryParam?.searchNameTerm))
+  },
+  async findBlog(id: string): Promise<BlogDBType | null> {
+    return await blogCollection.findOne({_id: new ObjectId(id)})
   },
 
   async createBlog(blogData: InputBlogType): Promise<BlogType | null> {

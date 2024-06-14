@@ -16,6 +16,13 @@ export const pagesCountFunc = (pageSize: number, totalCount: number): number => 
   return Math.ceil(totalCount / pageSize)
 }
 
+export const searchFunc = (field: string, value?: string)
+: { [key: string]: { $regex: string; $options: string; } } | {} => {
+  return (field && value) ? {
+    [field]: { $regex: value, $options: 'i' }
+  } : {}
+}
+
 export const sortFunc = (sortBy: string, sortDirection: SortDirectionType) => {
   const sorted: any = {}
   if (sortBy) {

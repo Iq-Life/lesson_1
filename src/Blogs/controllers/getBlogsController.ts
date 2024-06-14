@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
-import { blogsRepository } from '../repositories/blogsRepository'
-import { BlogType } from '../../types/blogsType'
+import { BlogType, QueryBlogParams } from '../../types/blogsType'
+import { blogService } from '../../posts/domain/blogService'
+import { ResReqType } from '../../types/defaultsTypes'
 
-export const getBlogsController = async (req: Request, res: Response<BlogType[]>) => {
-  const blogs = await blogsRepository.getBlogs()
+export const getBlogsController = async (req: Request<any, any, any, QueryBlogParams>, res: Response<ResReqType<BlogType>>) => {
+  const blogs = await blogService.getBlogs(req.query)
 
   res
     .status(200)

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { blogsRepository } from '../repositories/blogsRepository'
+import { blogRepository } from '../repositories/blogRepository'
 
 type ParamsType = {
   id: string
@@ -8,7 +8,7 @@ type ParamsType = {
 type ReqQueryType = string
 
 export const deleteBlogController = async (req: Request<ParamsType, any, ReqQueryType>, res: Response) => {
-  const isDeleted = await blogsRepository.deleteBlog(req.params.id);
+  const isDeleted = await blogRepository.deleteBlog(req.params.id);
 
   if (isDeleted) {
     res
