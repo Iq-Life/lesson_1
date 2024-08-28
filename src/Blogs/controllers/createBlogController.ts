@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ErrorType } from '../../types/errorType';
 import { BlogType, InputBlogType } from '../../types/blogsType';
 import { blogService } from '../../domain/blogService';
+import { HttpCodes } from '../../videos/enums/global-enum';
 
 type ResBodyType = BlogType | ErrorType
 
@@ -10,10 +11,10 @@ export const createBlogController = async (req: Request<any, any, InputBlogType>
 
   if (newBlog) {
     res
-      .status(201)
+      .status(HttpCodes.Created)
       .json(newBlog)
     } else {
     res
-      .sendStatus(500)
+      .sendStatus(HttpCodes.InternalServerError)
   }
 }

@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { PostType } from '../../types/postsTypes'
 import { postRepository } from '../repositories/postRepository'
 import { postService } from '../../domain/postService'
+import { HttpCodes } from '../../videos/enums/global-enum'
 
 type ParamsType = {
   id: string
@@ -14,10 +15,10 @@ export const getPostController = async (req: Request<ParamsType, any, ReqQueryTy
 
   if (findedPost) {
     res
-      .status(200)
+      .status(HttpCodes.Success)
       .json(findedPost)
   } else {
     res
-      .sendStatus(404)
+      .sendStatus(HttpCodes.NotFound)
   }
 }

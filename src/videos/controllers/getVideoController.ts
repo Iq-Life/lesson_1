@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { videoRepository } from '../repositories/videoRepository'
 import { OutputVideoType } from '../../types/videosTypes'
+import { HttpCodes } from '../enums/global-enum'
 
 type ParamsType = {
   id: string
@@ -13,10 +14,10 @@ export const getVideoController = (req: Request<ParamsType, any, ReqQueryType>, 
 
   if (findVideo) {
     res
-      .status(200)
+      .status(HttpCodes.Success)
       .json(findVideo)
   } else {
     res
-      .sendStatus(404)
+      .sendStatus(HttpCodes.NotFound)
   }
 }

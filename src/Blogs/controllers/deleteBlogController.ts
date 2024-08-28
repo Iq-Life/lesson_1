@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { blogRepository } from '../repositories/blogRepository'
+import { HttpCodes } from '../../videos/enums/global-enum'
 
 type ParamsType = {
   id: string
@@ -12,9 +13,9 @@ export const deleteBlogController = async (req: Request<ParamsType, any, ReqQuer
 
   if (isDeleted) {
     res
-      .sendStatus(204)
+      .sendStatus(HttpCodes.NoContent)
   } else {
     res
-      .sendStatus(404)
+      .sendStatus(HttpCodes.NotFound)
   }
 }

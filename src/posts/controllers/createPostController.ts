@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ErrorType } from '../../types/errorType';
 import { InputPostType, PostType } from '../../types/postsTypes';
 import { postService } from '../../domain/postService';
+import { HttpCodes } from '../../videos/enums/global-enum';
 
 type ResBodyType = PostType| null | ErrorType
 
@@ -14,18 +15,18 @@ export const createPostController = async (req: Request<any, any, InputPostType>
 
     if(!createdInfo.id){
       res
-      .status(500)
+      .status(HttpCodes.InternalServerError)
       .json(error)
     } else {
       const newPost = await postService.findPost(createdInfo.id)
 
       res
-        .status(201)
+        .status(HttpCodes.Created)
         .json(newPost)
     }
   } else {
     res
-      .status(400)
+      .status(HttpCodes.BadRequest)
       .json(error)
   }
 }

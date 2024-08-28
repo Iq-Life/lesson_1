@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { HttpCodes } from "../videos/enums/global-enum";
 
 type ExErrType = {
   type: string,
@@ -21,7 +22,7 @@ export const errorsValidation = (req: Request, res: Response, next: NextFunction
   
   if (expressErrors.length) {
     const error = errorParser(expressErrors)
-    res.status(400).json(error)
+    res.status(HttpCodes.BadRequest).json(error)
   } else {
     next()
   }

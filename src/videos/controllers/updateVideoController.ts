@@ -4,6 +4,7 @@ import { videoValidator } from '../../validators/video-validator';
 import { TypeRequestEnum } from '../enums/videos-enum';
 import { ErrorType } from '../../types/errorType';
 import { videoRepository } from '../repositories/videoRepository';
+import { HttpCodes } from '../enums/global-enum';
 
 type ParamsType = {
   id: string
@@ -19,14 +20,14 @@ export const updateVideoController = (req: Request<ParamsType, any, InputForUpda
 
     if (isUpdateVideo) {
       res
-        .sendStatus(204)
+        .sendStatus(HttpCodes.NoContent)
     } else {
       res
-        .sendStatus(404)
+        .sendStatus(HttpCodes.NotFound)
     }
   } else {
     res
-      .status(400)
+      .status(HttpCodes.BadRequest)
       .json(error)
   }
 }

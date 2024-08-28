@@ -4,6 +4,7 @@ import { videoValidator } from '../../validators/video-validator';
 import { TypeRequestEnum } from '../enums/videos-enum';
 import { videoRepository } from '../repositories/videoRepository';
 import { InputForCreateVideoType, OutputVideoType } from '../../types/videosTypes';
+import { HttpCodes } from '../enums/global-enum';
 
 type ResBodyType = OutputVideoType | ErrorType
 
@@ -14,11 +15,11 @@ export const createVideoController = (req: Request<any, any, InputForCreateVideo
   if (error.errorsMessages.length === 0) {
     const newVideo = videoRepository.createVideos(inputVideo)
     res
-      .status(201)
+      .status(HttpCodes.Created)
       .json(newVideo)
   } else {
     res
-      .status(400)
+      .status(HttpCodes.BadRequest)
       .json(error)
   }
 }

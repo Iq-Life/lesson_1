@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { BlogType } from '../../types/blogsType'
 import { blogService } from '../../domain/blogService'
+import { HttpCodes } from '../../videos/enums/global-enum'
 
 type ParamsType = {
   id: string
@@ -13,10 +14,10 @@ export const getBlogController = async (req: Request<ParamsType, any, ReqQueryTy
 
   if (findBlog) {
     res
-      .status(200)
+      .status(HttpCodes.Success)
       .json(findBlog)
   } else {
     res
-      .sendStatus(404)
+      .sendStatus(HttpCodes.NotFound)
   }
 }

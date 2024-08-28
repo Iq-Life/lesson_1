@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { loginPassword } from '../db/db';
 import { converStringIntoBase64 } from '../helpers/helpers';
+import { HttpCodes } from '../videos/enums/global-enum';
 
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -8,7 +9,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   
   if(!auth || !auth.includes('Basic ')) {
     res
-    .send(401)
+    .send(HttpCodes.Unauthorized)
     .json({})
     return
   }
@@ -17,7 +18,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   
   if(auth.slice(6) !== codedAuth) {
     res
-      .status(401)
+      .status(HttpCodes.Unauthorized)
       .json({})
     return
   }
