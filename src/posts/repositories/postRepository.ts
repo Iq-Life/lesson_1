@@ -13,7 +13,7 @@ export const postRepository = {
 
   async getPosts(): Promise<PostType[]> {
     const postsDB = await postCollection.find({}).toArray()
-    return postsDB.map((post) => this.mapToOutput(post))
+    return postsDB.map((post:PostDBType) => this.mapToOutput(post))
   },
 
   async findForOutput(postId: string): Promise<PostType | null> {
