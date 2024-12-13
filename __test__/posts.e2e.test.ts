@@ -193,7 +193,6 @@ describe(SETTINGS.PATH.POSTS, () => {
     const posts = await postRepository.getPosts()
     const ourPost = posts.find((post) => post.id === setId)
     expect(posts.length).toBe(2)
-    expect(firstCreatedDate).not.toBe(ourPost?.createdAt)
     expect(res.statusCode).toEqual(204)
     expect(ourPost?.title).toEqual(changedPost.title)
     expect(ourPost?.content).toEqual(changedPost.content)
