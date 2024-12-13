@@ -6,7 +6,7 @@ import { InputPostType, PostType } from '../../types/postsTypes';
 type ResBodyType = PostType| null | ErrorType
 
 export const createPostController = async (req: Request<any, any, InputPostType>, res: Response<ResBodyType>) => {
-  const inputPost = req.body;
+  const inputPost = req.body
   const error = {errorsMessages: []}
 
   if (error.errorsMessages.length === 0) {
