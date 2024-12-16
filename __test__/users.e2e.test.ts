@@ -1,7 +1,7 @@
 import { InputUserType } from './../src/types/userType';
 import { req } from './test-helpers'
 import { SETTINGS } from '../src/settings'
-import { blogCollection, loginPassword, postCollection, runDB } from '../src/db/db'
+import { blogCollection, loginPassword, postCollection, runDB, usersCollection } from '../src/db/db'
 import { createBlogs, createPosts } from './dataset'
 import { InputPostType } from '../src/types/postsTypes'
 import { converStringIntoBase64 } from '../src/helpers/helpers'
@@ -66,7 +66,7 @@ describe(SETTINGS.PATH.POSTS, () => {
   //
   // ---- POST --- //
   it('should create user', async () => {
-    await postCollection.drop()
+    await usersCollection.drop()
     const login = 'KLVzjHyCRw'
     const email = 'example@example.com'
     const newUser: InputUserType = {

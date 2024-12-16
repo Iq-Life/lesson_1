@@ -50,7 +50,8 @@ export const dataset1: DBType = {
   videos: [video1()],
   posts: [],
   // posts: [createPost()],
-  blogs: []
+  blogs: [],
+  users: []
 }
 
 export const dataVideoSet2 = (setId: number, title?: string, minAgeRestriction?: number): DBType => {
@@ -68,6 +69,7 @@ export const dataVideoSet2 = (setId: number, title?: string, minAgeRestriction?:
   return {
     videos: videosData,
     posts: [],
-    blogs: []
+    blogs: [],
+    users: []
   }
 }

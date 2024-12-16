@@ -1,19 +1,11 @@
-import { ObjectId } from "mongodb";
-import { UserDBType } from "../../types/db-types/UserDBTypes";
-import { InputUserType } from "../../types/userType";
+import { UserDBType } from "../../types/db-types/userDBTypes";
+import { usersCollection } from "../../db/db";
 
-const userRepository = {
-  async createUser(userData: InputUserType): Promise<UserDBType> {
+// DAL ()
+export const userRepository = {
+  async createUser(newUser: UserDBType): Promise<UserDBType | null> {
+    const createdInfo = await usersCollection.insertOne(newUser)
 
-
-    const newUser: UserDBType = {
-      _id: new ObjectId(),
-      login: userData.login,
-      email: userData.email,
-      createdAt: new Date().toISOString(),
-      password: userData.password
-    }
-
-    return newUser
+    return createdInfo.insertedId ? newUser : null
   }
 }
